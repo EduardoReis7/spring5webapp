@@ -10,8 +10,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "book")
 public class Book {
 
 	@Id
@@ -19,11 +22,13 @@ public class Book {
 	private Long id;
 	private String title;
 	private String isbn;
-	
+
 	@ManyToMany
-	@JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"),
-		inverseJoinColumns = @JoinColumn(name = "author_id"))
+	@JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
 	private Set<Author> author = new HashSet<>();
+
+	@ManyToOne
+	private Publisher publisher;
 
 	public Book() {
 
@@ -66,9 +71,17 @@ public class Book {
 		this.author = author;
 	}
 
+	public Publisher getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(Publisher publisher) {
+		this.publisher = publisher;
+	}
+
 	@Override
 	public String toString() {
-		return "Book [id=" + id + ", title=" + title + ", isbn=" + isbn + ", author=" + author + "]";
+		return "Book [id=" + id + ", title=" + title + ", isbn=" + isbn + "]";
 	}
 
 	@Override
@@ -96,5 +109,4 @@ public class Book {
 		return true;
 	}
 
-	
 }
